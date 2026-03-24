@@ -1,4 +1,4 @@
-package ch.ipa.jacqueline.backend.entites;
+package ch.ipa.jacqueline.backend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
