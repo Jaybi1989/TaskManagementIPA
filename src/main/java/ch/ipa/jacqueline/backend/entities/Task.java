@@ -1,12 +1,13 @@
 package ch.ipa.jacqueline.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -38,15 +39,16 @@ public class Task {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
-    private String status;
+    private TaskStatus status;
 
-    @Column(nullable = false)
-    private Integer priority;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private TaskPriority priority;
 
     @Column(name = "due_date")
-    @JsonFormat(pattern = "dd.MM.yyyy")
-    private java.time.LocalDateTime dueDate;
+    private LocalDateTime dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)

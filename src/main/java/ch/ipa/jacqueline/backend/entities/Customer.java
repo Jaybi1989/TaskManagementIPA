@@ -29,6 +29,9 @@ public class Customer {
     @Column(length = 100)
     private String email;
 
+    @Column(nullable = false)
+    private String address;
+
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 }
