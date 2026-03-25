@@ -1,16 +1,15 @@
-import { M as t, w as n, j as a, au as i, b as o } from "./copilot-CBUr_yt7.js";
-class l extends t {
+import { M as t, j as n, b as a } from "./copilot-qpiehfV3.js";
+class i extends t {
   constructor() {
     super(...arguments), this.eventBusRemovers = [], this.messageHandlers = {}, this.handleESC = (e) => {
-      const s = n.getPanelByTag(this.tagName);
-      !a.active && s && !s.individual || e.key === "Escape" && i(this);
+      n.active && e.key === "Escape" && typeof this.close == "function" && this.close();
     };
   }
   createRenderRoot() {
     return this;
   }
   onEventBus(e, s) {
-    this.eventBusRemovers.push(o.on(e, s));
+    this.eventBusRemovers.push(a.on(e, s));
   }
   connectedCallback() {
     super.connectedCallback(), this.addESCListener();
@@ -32,5 +31,5 @@ class l extends t {
   }
 }
 export {
-  l as B
+  i as B
 };

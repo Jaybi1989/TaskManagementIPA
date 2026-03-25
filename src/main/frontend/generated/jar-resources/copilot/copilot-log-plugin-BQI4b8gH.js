@@ -1,24 +1,14 @@
-import { j as R, ak as S, al as f, a9 as c, B as l, X as p, am as L, a5 as M, M as D, b as I, K as k, m as q, w as y, r as w } from "./copilot-CBUr_yt7.js";
-import { r as v } from "./state-Cjamo_sc.js";
-import { B as P } from "./base-panel-Cio3tcm4.js";
-import { i as r } from "./icons-CDS4_dEj.js";
-const A = 'copilot-log-panel ul{list-style-type:none;margin:0;padding:0}copilot-log-panel ul li{align-items:start;display:flex;gap:var(--space-50);padding:var(--space-100) var(--space-50);position:relative}copilot-log-panel ul li:before{border-bottom:1px dashed var(--divider-primary-color);content:"";inset:auto 0 0 calc(var(--size-m) + var(--space-100));position:absolute}copilot-log-panel ul li span.icon{display:flex;flex-shrink:0;justify-content:center;width:var(--size-m)}copilot-log-panel ul li.information span.icon{color:var(--blue-color)}copilot-log-panel ul li.warning span.icon{color:var(--warning-color)}copilot-log-panel ul li.error span.icon{color:var(--error-color)}copilot-log-panel ul li .message{display:flex;flex-direction:column;flex-grow:1;overflow:hidden}copilot-log-panel ul li:not(.expanded) span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}copilot-log-panel ul li button svg{transition:transform .15s cubic-bezier(.2,0,0,1)}copilot-log-panel ul li button[aria-expanded=true] svg{transform:rotate(90deg)}copilot-log-panel ul li code{margin-top:var(--space-50)}copilot-log-panel ul li.expanded .secondary{margin-top:var(--space-100)}copilot-log-panel .secondary a{display:block;margin-bottom:var(--space-50)}', B = () => {
-  const e = { hour: "numeric", minute: "numeric", second: "numeric", fractionalSecondDigits: 3 };
-  let t;
-  const a = navigator.language ?? "", s = a.indexOf("@"), o = s === -1 ? a : a.slice(0, s);
-  try {
-    t = new Intl.DateTimeFormat(Intl.getCanonicalLocales(o), e);
-  } catch (n) {
-    console.error("Failed to create date time formatter for ", o, n), t = new Intl.DateTimeFormat("en-US", e);
-  }
-  return t;
-}, C = B();
-var _ = Object.defineProperty, b = Object.getOwnPropertyDescriptor, u = (e, t, a, s) => {
-  for (var o = s > 1 ? void 0 : s ? b(t, a) : t, n = e.length - 1, i; n >= 0; n--)
-    (i = e[n]) && (o = (s ? i(t, a, o) : i(o)) || o);
-  return s && o && _(t, a, o), o;
+import { j as R, ae as S, af as x, a5 as c, B as n, S as p, ag as M, a3 as L, M as D, b as I, I as k, m as q, u as A, r as v } from "./copilot-qpiehfV3.js";
+import { r as $ } from "./state-BDZggJ9e.js";
+import { B } from "./base-panel-Du5uXvm8.js";
+import { i as l } from "./icons-BEaQgq_e.js";
+const P = 'copilot-log-panel ul{list-style-type:none;margin:0;padding:0}copilot-log-panel ul li{align-items:start;display:flex;gap:var(--space-50);padding:var(--space-100) var(--space-50);position:relative}copilot-log-panel ul li:before{border-bottom:1px dashed var(--divider-primary-color);content:"";inset:auto 0 0 calc(var(--size-m) + var(--space-100));position:absolute}copilot-log-panel ul li span.icon{display:flex;flex-shrink:0;justify-content:center;width:var(--size-m)}copilot-log-panel ul li.information span.icon{color:var(--blue-color)}copilot-log-panel ul li.warning span.icon{color:var(--warning-color)}copilot-log-panel ul li.error span.icon{color:var(--error-color)}copilot-log-panel ul li .message{display:flex;flex-direction:column;flex-grow:1;overflow:hidden}copilot-log-panel ul li:not(.expanded) span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}copilot-log-panel ul li button svg{transition:transform .15s cubic-bezier(.2,0,0,1)}copilot-log-panel ul li button[aria-expanded=true] svg{transform:rotate(90deg)}copilot-log-panel ul li code{margin-top:var(--space-50)}copilot-log-panel ul li.expanded .secondary{margin-top:var(--space-100)}';
+var C = Object.defineProperty, _ = Object.getOwnPropertyDescriptor, u = (e, t, a, i) => {
+  for (var o = i > 1 ? void 0 : i ? _(t, a) : t, d = e.length - 1, s; d >= 0; d--)
+    (s = e[d]) && (o = (i ? s(t, a, o) : s(o)) || o);
+  return i && o && C(t, a, o), o;
 };
-class F {
+class b {
   constructor() {
     this.showTimestamps = !1, q(this);
   }
@@ -26,8 +16,8 @@ class F {
     this.showTimestamps = !this.showTimestamps;
   }
 }
-const h = new F();
-let d = class extends P {
+const h = new b();
+let r = class extends B {
   constructor() {
     super(...arguments), this.unreadErrors = !1, this.messages = [], this.nextMessageId = 1, this.transitionDuration = 0, this.errorHandlersAdded = !1;
   }
@@ -45,14 +35,14 @@ let d = class extends P {
     ), !this.errorHandlersAdded) {
       const e = (t) => {
         k(() => {
-          y.attentionRequiredPanelTag = "copilot-log-panel";
+          A.attentionRequiredPanelTag = "copilot-log-panel";
         }), this.log(p.ERROR, t.message, !!t.internal, t.details, t.link);
       };
       S((t) => {
         e(t);
-      }), f.forEach((t) => {
+      }), x.forEach((t) => {
         e(t);
-      }), f.length = 0, this.errorHandlersAdded = !0;
+      }), x.length = 0, this.errorHandlersAdded = !0;
     }
   }
   clear() {
@@ -83,9 +73,9 @@ let d = class extends P {
     });
   }
   render() {
-    return l`
+    return n`
       <style>
-        ${A}
+        ${P}
       </style>
       <ul>
         ${this.messages.map((e) => this.renderMessage(e))}
@@ -94,19 +84,19 @@ let d = class extends P {
   }
   renderMessage(e) {
     let t, a;
-    return e.type === p.ERROR ? (a = r.alertTriangle, t = "Error") : e.type === p.WARNING ? (a = r.warning, t = "Warning") : (a = r.info, t = "Info"), l`
+    return e.type === p.ERROR ? (a = l.alertTriangle, t = "Error") : e.type === p.WARNING ? (a = l.warning, t = "Warning") : (a = l.info, t = "Info"), n`
       <li
         class="${e.type} ${e.expanded ? "expanded" : ""} ${e.details || e.link ? "has-details" : ""}"
         data-id="${e.id}">
         <span aria-label="${t}" class="icon" title="${t}">${a}</span>
         <span class="message" @click=${() => this.toggleExpanded(e)}>
-          <span class="timestamp" ?hidden=${!h.showTimestamps}>${N(e.timestamp)}</span>
+          <span class="timestamp" ?hidden=${!h.showTimestamps}>${W(e.timestamp)}</span>
           <span class="primary">
             ${e.expanded && e.expandedMessage ? e.expandedMessage : e.message}
           </span>
-          ${e.expanded ? l` <span class="secondary"> ${e.expandedDetails ?? e.details} </span>` : l` <span class="secondary" ?hidden="${!e.details && !e.link}">
+          ${e.expanded ? n` <span class="secondary"> ${e.expandedDetails ?? e.details} </span>` : n` <span class="secondary" ?hidden="${!e.details && !e.link}">
                 ${c(e.details)}
-                ${e.link ? l` <a href="${e.link}" target="_blank">Learn more</a>` : ""}
+                ${e.link ? n` <a href="${e.link}" target="_blank">Learn more</a>` : ""}
               </span>`}
         </span>
         <!-- TODO: a11y, button needs aria-controls with unique ids -->
@@ -117,46 +107,46 @@ let d = class extends P {
           class="icon"
           @click=${() => this.toggleExpanded(e)}
           ?hidden=${!this.canBeExpanded(e)}>
-          <span>${r.chevronRight}</span>
+          <span>${l.chevronRight}</span>
         </button>
       </li>
     `;
   }
-  log(e, t, a, s, o, n, i, E) {
+  log(e, t, a, i, o, d, s, E) {
     const T = this.nextMessageId;
-    this.nextMessageId += 1, i || (i = t);
-    const g = {
+    this.nextMessageId += 1, s || (s = t);
+    const f = {
       id: T,
       type: e,
       message: t,
-      details: s,
+      details: i,
       link: o,
       dontShowAgain: !1,
       deleted: !1,
       expanded: !1,
-      expandedMessage: n,
-      expandedDetails: i,
+      expandedMessage: d,
+      expandedDetails: s,
       timestamp: /* @__PURE__ */ new Date(),
       internal: a,
       userId: E
     };
-    for (this.messages.push(g); this.messages.length > d.MAX_LOG_ROWS; )
+    for (this.messages.push(f); this.messages.length > r.MAX_LOG_ROWS; )
       this.messages.shift();
     return this.requestUpdate(), this.updateComplete.then(() => {
       const m = this.renderRoot.querySelector(".message:last-child");
       m ? (setTimeout(() => m.scrollIntoView({ behavior: "smooth" }), this.transitionDuration), this.unreadErrors = !1) : e === p.ERROR && (this.unreadErrors = !0);
-    }), g;
+    }), f;
   }
   updateLog(e) {
     let t = this.messages.find((a) => a.userId === e.id);
-    t || (t = this.log(p.INFORMATION, "<Log message to update was not found>", !1)), Object.assign(t, e), L(t.expandedDetails) && (t.expandedDetails = c(t.expandedDetails)), this.requestUpdate();
+    t || (t = this.log(p.INFORMATION, "<Log message to update was not found>", !1)), Object.assign(t, e), M(t.expandedDetails) && (t.expandedDetails = c(t.expandedDetails)), this.requestUpdate();
   }
   updated() {
     const e = this.querySelector(".row:last-child");
     e && this.isTooLong(e.querySelector(".firstrowmessage")) && e.querySelector("button.expand")?.removeAttribute("hidden");
   }
   toggleExpanded(e) {
-    this.canBeExpanded(e) && (e.expanded = !e.expanded, this.requestUpdate()), M("use-log", { source: "toggleExpanded" });
+    this.canBeExpanded(e) && (e.expanded = !e.expanded, this.requestUpdate()), L("use-log", { source: "toggleExpanded" });
   }
   canBeExpanded(e) {
     if (e.expandedMessage || e.expanded)
@@ -170,22 +160,22 @@ let d = class extends P {
     return e && e.offsetWidth < e.scrollWidth;
   }
 };
-d.MAX_LOG_ROWS = 1e3;
+r.MAX_LOG_ROWS = 1e3;
 u([
-  v()
-], d.prototype, "unreadErrors", 2);
+  $()
+], r.prototype, "unreadErrors", 2);
 u([
-  v()
-], d.prototype, "messages", 2);
-d = u([
-  w("copilot-log-panel")
-], d);
-let x = class extends D {
+  $()
+], r.prototype, "messages", 2);
+r = u([
+  v("copilot-log-panel")
+], r);
+let w = class extends D {
   createRenderRoot() {
     return this;
   }
   render() {
-    return l`
+    return n`
       <style>
         copilot-log-panel-actions {
           display: contents;
@@ -198,7 +188,7 @@ let x = class extends D {
         @click=${() => {
       I.emit("clear-log", {});
     }}>
-        <span>${r.trash}</span>
+        <span>${l.trash}</span>
       </button>
       <button
         aria-label="Toggle timestamps"
@@ -207,34 +197,39 @@ let x = class extends D {
         @click=${() => {
       h.toggleShowTimestamps();
     }}>
-        <span class="${h.showTimestamps ? "on" : "off"}"> ${r.clock} </span>
+        <span class="${h.showTimestamps ? "on" : "off"}"> ${l.clock} </span>
       </button>
     `;
   }
 };
-x = u([
-  w("copilot-log-panel-actions")
-], x);
-const $ = {
+w = u([
+  v("copilot-log-panel-actions")
+], w);
+const U = {
   header: "Log",
   expanded: !0,
   panelOrder: 0,
   panel: "bottom",
   floating: !1,
   tag: "copilot-log-panel",
-  actionsTag: "copilot-log-panel-actions",
-  individual: !0
-}, U = {
+  actionsTag: "copilot-log-panel-actions"
+}, N = {
   init(e) {
-    e.addPanel($);
+    e.addPanel(U);
   }
 };
-window.Vaadin.copilot.plugins.push(U);
-y.addPanel($);
-function N(e) {
-  return C.format(e);
+window.Vaadin.copilot.plugins.push(N);
+const y = { hour: "numeric", minute: "numeric", second: "numeric", fractionalSecondDigits: 3 };
+let g;
+try {
+  g = new Intl.DateTimeFormat(navigator.language, y);
+} catch (e) {
+  console.error("Failed to create date time formatter for ", navigator.language, e), g = new Intl.DateTimeFormat("en-US", y);
+}
+function W(e) {
+  return g.format(e);
 }
 export {
-  x as Actions,
-  d as CopilotLogPanel
+  w as Actions,
+  r as CopilotLogPanel
 };
