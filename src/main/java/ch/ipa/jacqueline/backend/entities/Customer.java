@@ -33,5 +33,5 @@ public class Customer {
     private String address;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 }

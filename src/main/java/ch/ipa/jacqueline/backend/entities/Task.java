@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,6 @@ import java.time.LocalDateTime;
         }
 )
 @SQLDelete(sql = "UPDATE task SET is_deleted = true WHERE id = ?")
-@SQLRestriction("is_deleted = false")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -59,5 +57,5 @@ public class Task {
     private User assignedUser;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 }
