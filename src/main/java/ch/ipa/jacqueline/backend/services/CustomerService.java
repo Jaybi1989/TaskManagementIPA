@@ -46,6 +46,8 @@ public class CustomerService {
         Customer existingCustomer = customerRepository.findById(customer.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Kunde nicht gefunden"));
         existingCustomer.setName(customer.getName());
+        existingCustomer.setEmail(customer.getEmail());
+        existingCustomer.setAddress(customer.getAddress());
         existingCustomer.setDeleted(customer.isDeleted());
         log.info("Aktualisiere Kunden: {}", customer.getName());
         return customerRepository.save(existingCustomer);
@@ -60,6 +62,7 @@ public class CustomerService {
         }
     }
 
+
     @Transactional
     public void deleteCustomer(long id) {
         if (projectRepository.countByCustomerId(id) > 0) {
@@ -71,6 +74,7 @@ public class CustomerService {
             log.info("Kunde archiviert: {}", customer.getName());
         });
     }
+
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")

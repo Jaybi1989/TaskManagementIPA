@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,11 +26,6 @@ public class UserService {
                 .filter(user -> filter == null || filter.isEmpty() ||
                         user.getUsername().toLowerCase().contains(filter.toLowerCase()))
                 .collect(Collectors.toList());
-    }
-
-    public Optional<User> findActiveUserById(long id) {
-        return userRepository.findById(id)
-                .filter(User::isActive);
     }
 
     @Transactional
@@ -74,16 +68,9 @@ public class UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deactivateUser(long id) {
         userRepository.findById(id).ifPresent(user -> {
-            user.setActive(false);
+            user.setActive(!user.isActive());
             userRepository.save(user);
-            log.info("Benutzer deaktiviert: {}", user.getUsername());
+            log.info("Benutzer {} : {}", user.getUsername(), user.isActive() ? "aktiviert" : "deaktiviert");
         });
-    }
-
-    @Transactional
-    @PreAuthorize("hasRole('ADMIN')")
-    public void hardDeleteUser(long id) {
-        log.warn("HARD DELETE: Benutzer mit ID {} wird endgültig gelöscht!", id);
-        userRepository.deleteById(id);
     }
 }

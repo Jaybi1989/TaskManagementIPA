@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
         }
 )
 @SQLDelete(sql = "UPDATE task SET is_deleted = true WHERE id = ?")
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
