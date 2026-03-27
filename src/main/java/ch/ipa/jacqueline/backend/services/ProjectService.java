@@ -3,7 +3,6 @@ package ch.ipa.jacqueline.backend.services;
 import ch.ipa.jacqueline.backend.entities.Project;
 import ch.ipa.jacqueline.backend.repositories.ProjectRepository;
 import ch.ipa.jacqueline.backend.repositories.TaskRepository;
-import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;

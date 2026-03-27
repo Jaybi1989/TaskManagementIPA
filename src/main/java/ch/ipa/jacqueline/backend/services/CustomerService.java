@@ -62,7 +62,6 @@ public class CustomerService {
         }
     }
 
-
     @Transactional
     public void deleteCustomer(long id) {
         if (projectRepository.countByCustomerId(id) > 0) {
@@ -74,7 +73,6 @@ public class CustomerService {
             log.info("Kunde archiviert: {}", customer.getName());
         });
     }
-
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")

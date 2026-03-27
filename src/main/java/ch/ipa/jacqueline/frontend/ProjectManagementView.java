@@ -331,7 +331,9 @@ public class ProjectManagementView extends VerticalLayout {
         binder.forField(dueDate)
                 .withConverter(d -> d != null ? d.atStartOfDay() : null, t -> t != null ? t.toLocalDate() : null)
                 .bind(Task::getDueDate, Task::setDueDate);
-        binder.bind(title, "title");
+        binder.forField(title)
+                .asRequired("Titel ist erforderlich")
+                .bind(Task::getTitle, Task::setTitle);
         binder.bind(description, "description");
         binder.bind(status, "status");
         binder.bind(priority, "priority");
@@ -340,7 +342,7 @@ public class ProjectManagementView extends VerticalLayout {
 
         Button saveBtn = new Button("Speichern", e -> {
             try {
-                if (binder.validate().isOk()) {
+                if (binder.writeBeanIfValid(task)) {
                     if (task.getProject() == null) {
                         task.setProject(selectedProject);
                     }

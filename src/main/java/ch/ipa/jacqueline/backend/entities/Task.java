@@ -3,6 +3,7 @@ package ch.ipa.jacqueline.backend.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 
@@ -17,13 +18,14 @@ import java.time.LocalDateTime;
         }
 )
 @SQLDelete(sql = "UPDATE task SET is_deleted = true WHERE id = ?")
-
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_generator")
     @SequenceGenerator(
             name = "task_generator",
@@ -49,11 +51,11 @@ public class Task {
     @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_user_id")
     private User assignedUser;
 

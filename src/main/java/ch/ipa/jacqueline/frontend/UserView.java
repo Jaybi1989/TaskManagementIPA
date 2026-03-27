@@ -34,6 +34,7 @@ public class UserView extends VerticalLayout {
     private final RoleService roleService;
     private final Grid<User> grid = new Grid<>(User.class, false);
     private final TextField filterText = new TextField();
+    private final Checkbox showInactive = new Checkbox("Inaktive anzeigen");
 
     public UserView(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -50,11 +51,13 @@ public class UserView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
+        showInactive.addValueChangeListener(e -> updateList());
+
         Button addButton = new Button("Neuer Benutzer", VaadinIcon.PLUS.create(), e -> openUserDialog(new User()));
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addButton.setTooltipText("Neuen Benutzer erstellen");
 
-        return new HorizontalLayout(filterText, addButton);
+        return new HorizontalLayout(filterText, showInactive, addButton);
     }
 
     private void configureGrid() {
@@ -95,6 +98,10 @@ public class UserView extends VerticalLayout {
         TextField username = new TextField("Benutzername");
         username.setValue(user.getUsername() != null ? user.getUsername() : "");
 
+        TextField email = new TextField("E-Mail");
+        email.setValue(user.getEmail() != null ? user.getEmail() : "");
+        email.setRequired(true);
+
         PasswordField password = new PasswordField("Passwort");
 
         Checkbox activeCheckBox = new Checkbox("Aktiv");
@@ -108,7 +115,18 @@ public class UserView extends VerticalLayout {
 
         Button saveBtn = new Button("Speichern", e -> {
             try {
+                if (user.getId() == null && (password.getValue() == null || password.getValue().isEmpty())) {
+                    Notification.show("Passwort ist erforderlich.");
+                    password.setInvalid(true);
+                    return;
+                }
+                if (roleSelect.getValue() == null) {
+                    Notification.show("Eine Rolle ist erforderlich.");
+                    roleSelect.setInvalid(true);
+                    return;
+                }
                 user.setUsername(username.getValue());
+                user.setEmail(email.getValue());
                 user.setRole(roleSelect.getValue());
                 user.setActive(activeCheckBox.getValue());
                 if (password.getValue() != null && !password.getValue().isEmpty()) {
@@ -124,12 +142,12 @@ public class UserView extends VerticalLayout {
         });
         saveBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        dialog.add(new VerticalLayout(username, password, roleSelect, activeCheckBox));
+        dialog.add(new VerticalLayout(username, email, password, roleSelect, activeCheckBox));
         dialog.getFooter().add(new Button("Abbrechen", e -> dialog.close()), saveBtn);
         dialog.open();
     }
 
     private void updateList() {
-        grid.setItems(userService.getAllUser(filterText.getValue(), false));
+        grid.setItems(userService.getAllUser(filterText.getValue(), showInactive.getValue()));
     }
 }
