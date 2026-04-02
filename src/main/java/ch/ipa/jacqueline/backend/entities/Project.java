@@ -3,6 +3,7 @@ package ch.ipa.jacqueline.backend.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -11,12 +12,14 @@ import org.hibernate.annotations.SQLRestriction;
 @Table(name = "project", indexes = @Index(name = "idx_customer_id", columnList = "customer_id"))
 @SQLDelete(sql = "UPDATE project SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
+public class Project extends AuditableEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_generator")
     @SequenceGenerator(
             name = "project_generator",

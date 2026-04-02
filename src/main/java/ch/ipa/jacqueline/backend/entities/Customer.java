@@ -9,12 +9,14 @@ import org.hibernate.annotations.SQLRestriction;
 @Table(name = "customers")
 @SQLDelete(sql = "UPDATE customers SET is_deleted = true WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Customer extends AuditableEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
     @SequenceGenerator(
             name = "customer_generator",

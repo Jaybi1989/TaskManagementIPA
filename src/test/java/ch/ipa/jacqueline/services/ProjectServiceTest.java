@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -47,7 +48,7 @@ class ProjectServiceTest {
     void findAllProjects_FilterByCustomer_ReturnsMatchingProjects() {
         Customer customer = new Customer(1L, "Pritz IT GmbH", "info@pritz-it.com", "Richtistrasse 7", false);
         Project project = new Project(1L, "IPA Projekt", "Beschreibung", customer, false);
-        when(projectRepository.findAll()).thenReturn(List.of(project));
+        when(projectRepository.findAllWithFilterNative("", false)).thenReturn(List.of(project));
 
         List<Project> result = projectService.findAllProjects("", false);
 
@@ -60,7 +61,7 @@ class ProjectServiceTest {
     void updateProject_ChangesName_UpdatedCorrectly() {
         Customer customer = new Customer(1L, "Pritz IT GmbH", "info@pritz-it.com", "Richtistrasse 7", false);
         Project project = new Project(1L, "Neuer Name", "Beschreibung", customer, false);
-        when(projectRepository.existsById(1L)).thenReturn(true);
+        when(projectRepository.findByIdIgnoreDeleted(1L)).thenReturn(Optional.of(project));
         when(projectRepository.save(project)).thenReturn(project);
 
         Project result = projectService.updateProject(project);
@@ -76,6 +77,6 @@ class ProjectServiceTest {
 
         projectService.hardDeleteProject(1L);
 
-        verify(projectRepository).deleteById(1L);
+        verify(projectRepository).hardDelete(1L);
     }
 }

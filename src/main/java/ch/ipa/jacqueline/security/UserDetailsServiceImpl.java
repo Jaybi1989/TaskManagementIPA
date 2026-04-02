@@ -28,12 +28,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Benutzer nicht gefunden: " + username));
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(formatPasswordHash(user.getPasswordHash()))
-                .authorities(mapRolesToAuthorities(user))
-                .disabled(!user.isActive())
-                .build();
+        return new CustomUserDetails(
+                user.getId(),
+                user.getUsername(),
+                formatPasswordHash(user.getPasswordHash()),
+                user.isActive(),
+                mapRolesToAuthorities(user)
+        );
     }
 
     private String formatPasswordHash(String passwordHash) {

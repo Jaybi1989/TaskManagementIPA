@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
@@ -22,4 +23,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             @Param("filter") String filter,
             @Param("showArchived") boolean showArchived
     );
+
+    @Query(value = "SELECT * FROM customers WHERE id = :id", nativeQuery = true)
+    Optional<Customer> findByIdIgnoreDeleted(@Param("id") Long id);
 }

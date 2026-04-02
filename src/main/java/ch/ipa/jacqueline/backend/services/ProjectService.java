@@ -26,11 +26,8 @@ public class ProjectService {
     }
 
     public List<Project> findAllProjects(String filterText, boolean showArchived) {
-        String search = (filterText == null) ? "" : filterText.toLowerCase();
-        return projectRepository.findAll().stream()
-                .filter(p -> showArchived || !p.isDeleted())
-                .filter(p -> p.getName() != null && p.getName().toLowerCase().contains(search))
-                .toList();
+        String filter = (filterText == null) ? "" : filterText;
+        return projectRepository.findAllWithFilterNative(filter, showArchived);
     }
 
     @Transactional
@@ -56,9 +53,8 @@ public class ProjectService {
         if (project.getId() == null || project.getId() == 0) {
             throw new IllegalArgumentException("Projekt muss eine gültige ID haben");
         }
-        if (!projectRepository.existsById(project.getId())) {
-            throw new IllegalArgumentException("Projekt mit ID " + project.getId() + " nicht gefunden.");
-        }
+        projectRepository.findByIdIgnoreDeleted(project.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Projekt mit ID " + project.getId() + " nicht gefunden."));
         log.info("UPDATE: Projekt ID {}", project.getId());
         return projectRepository.save(project);
     }
@@ -76,7 +72,16 @@ public class ProjectService {
     @PreAuthorize("hasRole('ADMIN')")
     public void hardDeleteProject(long id) {
         taskRepository.findAllByProjectId(id).forEach(taskRepository::delete);
-        projectRepository.deleteById(id);
+        projectRepository.hardDelete(id);
         log.info("Projekt permanent gelöscht: ID {}", id);
+    }
+
+    @Transactional
+    public void restoreProject(long id) {
+        projectRepository.findByIdIgnoreDeleted(id).ifPresent(project -> {
+            project.setDeleted(false);
+            projectRepository.save(project);
+            log.info("Projekt reaktiviert: {}", project.getName());
+        });
     }
 }

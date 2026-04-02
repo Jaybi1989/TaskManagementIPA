@@ -8,12 +8,14 @@ import lombok.*;
         name = "users",
         indexes = @Index(name = "idx_user_username", columnList = "username")
 )
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends AuditableEntity {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
     @SequenceGenerator(
             name = "user_generator",

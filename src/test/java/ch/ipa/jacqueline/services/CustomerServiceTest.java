@@ -57,7 +57,7 @@ class CustomerServiceTest {
     void updateCustomer_ChangesName_UpdatedCorrectly() {
         Customer existing = new Customer(1L, "Alt GmbH", "alt@test.com", "Alte Strasse 1", false);
         Customer updated = new Customer(1L, "Neu GmbH", "neu@test.com", "Neue Strasse 2", false);
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(customerRepository.findByIdIgnoreDeleted(1L)).thenReturn(Optional.of(existing));
         when(customerRepository.save(existing)).thenReturn(existing);
 
         Customer result = customerService.updateCustomer(updated);

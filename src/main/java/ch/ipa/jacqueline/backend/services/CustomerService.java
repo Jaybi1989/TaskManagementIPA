@@ -43,7 +43,7 @@ public class CustomerService {
 
     @Transactional
     public Customer updateCustomer(Customer customer) {
-        Customer existingCustomer = customerRepository.findById(customer.getId())
+        Customer existingCustomer = customerRepository.findByIdIgnoreDeleted(customer.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Kunde nicht gefunden"));
         existingCustomer.setName(customer.getName());
         existingCustomer.setEmail(customer.getEmail());

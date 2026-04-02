@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 )
 @SQLDelete(sql = "UPDATE task SET is_deleted = true WHERE id = ?")
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class Task extends AuditableEntity{
 
     @Id
     @EqualsAndHashCode.Include

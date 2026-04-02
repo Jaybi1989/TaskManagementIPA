@@ -1,8 +1,6 @@
 package ch.ipa.jacqueline.backend.services;
 
-import ch.ipa.jacqueline.backend.entities.Task;
-import ch.ipa.jacqueline.backend.entities.TaskStatus;
-import ch.ipa.jacqueline.backend.entities.TaskPriority;
+import ch.ipa.jacqueline.backend.entities.*;
 import ch.ipa.jacqueline.backend.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,18 +19,12 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     public List<Task> findByProject(long projectId, boolean showArchived) {
-        if (showArchived) {
-            return taskRepository.findAllByProjectId(projectId);
-        }
-        return taskRepository.findActiveByProjectId(projectId);
+        return taskRepository.findAllByProjectIdWithArchived(projectId, showArchived);
     }
 
     public List<Task> findAllTasks(String filterText, boolean showArchived) {
-        List<Task> baseTasks = showArchived ? taskRepository.findAll() : taskRepository.findAllActive();
-        String search = (filterText == null) ? "" : filterText.toLowerCase();
-        return baseTasks.stream()
-                .filter(t -> t.getTitle() != null && t.getTitle().toLowerCase().contains(search))
-                .toList();
+        String filter = (filterText == null) ? "" : filterText;
+        return taskRepository.findAllWithFilterNative(filter, showArchived);
     }
 
     public Optional<Task> findById(long id) {
@@ -84,6 +76,15 @@ public class TaskService {
             task.setDeleted(true);
             taskRepository.save(task);
             log.info("ARCHIVE: Task ID {} archiviert", id);
+        });
+    }
+
+    @Transactional
+    public void restoreTask(long id) {
+        taskRepository.findById(id).ifPresent(task -> {
+            task.setDeleted(false);
+            taskRepository.save(task);
+            log.info("RESTORE: Task ID {} wiederhergestellt", id);
         });
     }
 

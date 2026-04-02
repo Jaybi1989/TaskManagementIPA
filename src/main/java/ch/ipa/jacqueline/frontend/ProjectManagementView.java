@@ -48,7 +48,7 @@ public class ProjectManagementView extends VerticalLayout {
     private final Grid<Task> taskGrid = new Grid<>(Task.class, false);
 
     private final TextField filterField = new TextField();
-    private final Checkbox showArchived = new Checkbox("Archivierte anzeigen");
+    private final Checkbox showArchived = new Checkbox("Archivierte Projekte und Aufgaben anzeigen");
 
     private Project selectedProject;
 
@@ -89,16 +89,16 @@ public class ProjectManagementView extends VerticalLayout {
 
     private HorizontalLayout getMainContent() {
         HorizontalLayout content = new HorizontalLayout(projectGrid, taskGrid);
-        content.setFlexGrow(1, projectGrid);
-        content.setFlexGrow(2, taskGrid);
+        projectGrid.setWidth("30%");
+        taskGrid.setWidth("70%");
         content.setSizeFull();
         return content;
     }
 
     private void configureProjectGrid() {
         projectGrid.setSizeFull();
-        projectGrid.addColumn(Project::getName).setHeader("Projekt").setSortable(true).setAutoWidth(true);
-        projectGrid.addColumn(p -> p.getCustomer() != null ? p.getCustomer().getName() : "-").setHeader("Kunde").setAutoWidth(true);
+        projectGrid.addColumn(Project::getName).setHeader("Projekt").setSortable(true).setResizable(true).setAutoWidth(true);
+        projectGrid.addColumn(p -> p.getCustomer() != null ? p.getCustomer().getName() : "-").setHeader("Kunde").setResizable(true).setAutoWidth(true);
 
         projectGrid.addComponentColumn(p -> {
             HorizontalLayout actions = new HorizontalLayout();
@@ -121,12 +121,23 @@ public class ProjectManagementView extends VerticalLayout {
                 deleteBtn.setTooltipText("Projekt archivieren");
 
                 actions.add(editBtn, deleteBtn);
-            } else if (isAdmin) {
-                Button hardDeleteBtn = new Button(VaadinIcon.ERASER.create(),
-                        e -> openConfirmDeleteDialog(p));
-                hardDeleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL);
-                hardDeleteBtn.setTooltipText("Projekt dauerhaft löschen");
-                actions.add(hardDeleteBtn);
+            } else {
+                Button restoreBtn = new Button(VaadinIcon.REFRESH.create(), e -> {
+                    projectService.restoreProject(p.getId());
+                    refreshData();
+                    Notification.show("Projekt reaktiviert.");
+                });
+                restoreBtn.addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL);
+                restoreBtn.setTooltipText("Projekt wiederherstellen");
+                actions.add(restoreBtn);
+
+                if (isAdmin) {
+                    Button hardDeleteBtn = new Button(VaadinIcon.ERASER.create(),
+                            e -> openConfirmDeleteDialog(p));
+                    hardDeleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL);
+                    hardDeleteBtn.setTooltipText("Projekt dauerhaft löschen");
+                    actions.add(hardDeleteBtn);
+                }
             }
             return actions;
         }).setHeader("Aktionen").setWidth("160px").setFlexGrow(0);
@@ -163,17 +174,17 @@ public class ProjectManagementView extends VerticalLayout {
 
     private void configureTaskGrid() {
         taskGrid.setSizeFull();
-        taskGrid.addColumn(Task::getTitle).setHeader("Aufgabe").setSortable(true);
-        taskGrid.addColumn(t -> t.getStatus() != null ? t.getStatus().getLabel() : "-").setHeader("Status");
-        taskGrid.addColumn(t -> t.getPriority() != null ? t.getPriority().getLabel() : "-").setHeader("Prio");
+        taskGrid.addColumn(Task::getTitle).setHeader("Aufgabe").setSortable(true).setResizable(true).setAutoWidth(true);
+        taskGrid.addColumn(t -> t.getStatus() != null ? t.getStatus().getLabel() : "-").setHeader("Status").setResizable(true);
+        taskGrid.addColumn(t -> t.getPriority() != null ? t.getPriority().getLabel() : "-").setHeader("Prio").setResizable(true);
 
         taskGrid.addColumn(t -> t.getDueDate() != null ?
                 t.getDueDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) : "-"
-        ).setHeader("Fällig");
+        ).setHeader("Fällig").setResizable(true);
 
         taskGrid.addColumn(t -> t.getAssignedUser() != null ?
                 t.getAssignedUser().getUsername() : "Unzugewiesen"
-        ).setHeader("Bearbeiter");
+        ).setHeader("Bearbeiter").setResizable(true);
 
         taskGrid.addComponentColumn(t -> {
             HorizontalLayout actions = new HorizontalLayout();
@@ -196,12 +207,23 @@ public class ProjectManagementView extends VerticalLayout {
                 deleteBtn.setTooltipText("Aufgabe archivieren");
 
                 actions.add(editBtn, deleteBtn);
-            } else if (isAdmin) {
-                Button hardDeleteBtn = new Button(VaadinIcon.ERASER.create(),
-                        e -> openConfirmTaskDeleteDialog(t));
-                hardDeleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL);
-                hardDeleteBtn.setTooltipText("Aufgabe dauerhaft löschen");
-                actions.add(hardDeleteBtn);
+            } else {
+                Button restoreBtn = new Button(VaadinIcon.REFRESH.create(), e -> {
+                    taskService.restoreTask(t.getId());
+                    updateTaskList();
+                    Notification.show("Aufgabe wiederhergestellt.");
+                });
+                restoreBtn.addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL);
+                restoreBtn.setTooltipText("Aufgabe wiederherstellen");
+                actions.add(restoreBtn);
+
+                if (isAdmin) {
+                    Button hardDeleteBtn = new Button(VaadinIcon.ERASER.create(),
+                            e -> openConfirmTaskDeleteDialog(t));
+                    hardDeleteBtn.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL);
+                    hardDeleteBtn.setTooltipText("Aufgabe dauerhaft löschen");
+                    actions.add(hardDeleteBtn);
+                }
             }
             return actions;
         }).setHeader("Aktionen").setAutoWidth(true);
@@ -339,6 +361,7 @@ public class ProjectManagementView extends VerticalLayout {
         binder.bind(priority, "priority");
         binder.bind(assignedUser, "assignedUser");
         binder.setBean(task);
+
 
         Button saveBtn = new Button("Speichern", e -> {
             try {

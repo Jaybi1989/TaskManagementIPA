@@ -117,11 +117,7 @@ class TaskServiceTest {
     @Test
     @DisplayName("UT-15: Datenkonsistenz (R2) - Tasks nach Soft-Delete des Projekts nicht mehr gelistet")
     void findAllTasks_WithDeletedProject_NotListed() {
-        Customer customer = new Customer(1L, "Pritz IT GmbH", "info@pritz-it.com", "Richtistrasse 7", false);
-        Project deletedProject = new Project(1L, "Gelöschtes Projekt", "Beschreibung", customer, true);
-        Task task = new Task(1L, "Login implementieren", "Beschreibung",
-                TaskStatus.OFFEN, TaskPriority.HOCH, null, deletedProject, null, false);
-        when(taskRepository.findAllActive()).thenReturn(List.of());
+        when(taskRepository.findAllWithFilterNative("", false)).thenReturn(List.of());
 
         List<Task> result = taskService.findAllTasks("", false);
 
