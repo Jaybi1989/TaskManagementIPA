@@ -91,7 +91,7 @@ public class TaskService {
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public void hardDeleteTask(long id) {
-        taskRepository.deleteById(id);
+        taskRepository.hardDeleteById(id);
         log.info("HARD DELETE: Task ID {} permanent gelöscht", id);
     }
 }
