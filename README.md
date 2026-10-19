@@ -237,4 +237,4 @@ Beim ersten Start legt der `DataInitializer` automatisch zwei Benutzer an:
 **Jacqueline Bigler**
 Informatikerin EFZ Applikationsentwicklung
 
-[LinkedIn](https://www.linkedin.com/in/DEIN-PROFIL) · [GitHub](https://github.com/Jaybi1989)
+[LinkedIn](https://www.linkedin.com/in/jay-bi-6a869b375/) · [GitHub](https://github.com/Jaybi1989)
